@@ -15,9 +15,9 @@ As a note, I believe that in practice, building images for the N most recent rel
 
 ## Example
 
-A single action workflow is available: [./github/workflows/docker-images.yml](https://github.com/charbonnierg/demo-dynamic-matrix/blob/main/.github/workflows/docker-images.yml). Manual dispatch outcome is avaibale in [Actions section](https://github.com/charbonnierg/demo-dynamic-matrix/actions/runs/6517850378). Aside from manual dispatch, workflow is scheduled to run twice a month using the cron expression: `"30 1 1,15 * *"` (meaning the 1st and the 15th of every month at 1:30am).
+A single action workflow is available: [./github/workflows/docker-images.yml](https://github.com/charbonnierg/demo-dynamic-matrix/blob/main/.github/workflows/docker-images.yml). Manual dispatch outcome is available in [Actions section](https://github.com/charbonnierg/demo-dynamic-matrix/actions/runs/6517850378). Aside from manual dispatch, workflow is scheduled to run twice a month using the cron expression `"30 1 1,15 * *"` (meaning the 1st and the 15th of every month at 1:30am).
 
-This workflow is composed of two sequential jobs:
+The workflow is composed of two sequential jobs (i.e., the second is dependent on the first):
 
 - First job has a single step and a single output coming from the step. This step:
   - fetches the 4 latest releases of this project using GitHub API
@@ -30,8 +30,8 @@ This workflow is composed of two sequential jobs:
   - prepare docker buildx environment
   - build and push docker images for this tag
 
-## Key Take Aways
 
+## Key Take Aways
 
 - A step may emit an output by echoing into `$GITHUB_OUTPUT`:
 
