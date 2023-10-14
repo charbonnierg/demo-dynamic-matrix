@@ -4,13 +4,13 @@ This repository shows how to use a GitHub Action Worflow with a dynamic matrix s
 
 ## Motivation
 
-Docker images are only built once (at release time) for many open source projects. The problem with this approach is that if a CVE is detected in the base image, then the CVE is present in the docker image of the project until next release. That seems to be the case for [oauth2-proxy](https://oauth2-proxy.github.io/oauth2-proxy/) according to [this issue](https://github.com/oauth2-proxy/oauth2-proxy/issues/2243) for example.
+Docker images are only built once (at release time) for many open source projects. The problem with this approach is that if when CVE is detected in the base image, CVE is present in the docker image of the project until next release, and won't be fixed for historical releases. That seems to be the case for [oauth2-proxy](https://oauth2-proxy.github.io/oauth2-proxy/) according to [this issue](https://github.com/oauth2-proxy/oauth2-proxy/issues/2243) for example.
 
-I was wondering how projects such as oauth2-proxy could automate periodic builds for historical releases, and quickly identified workflows matrix as a solution for the problem, because it allows build to happen concurrently (as compared to a shell script performing a for loop within a step).
+I was wondering how projects such as oauth2-proxy could automate periodic builds for historical releases, and I  identified workflows matrix as a potential solution to the problem, because matrices let build run concurrently (as opposed to a shell script performing a for loop within a single step).
 
-Also, in order to avoid updating the workflow file each time a new release is out, I wanted a solution which did not require configuring the git references explicitely, but rather static configuration, for example, the last 4 releases.
+Also, in order to avoid requiring an update to the workflow file each time a new release is out, I wanted a solution which did not require configuring the git references explicitely, but rather static configuration, for example, the last 4 releases.
 
-In practice, building images for the N most recent releases may not be the best strategy. Building image for the N most recent minor releases for each supported major version seems a better strategy instead. But it would make this example more complex, and it's just a matter of interacting with GitHub API + adding some logic before generating JSON output, it has nothing to do with dynamic matrices.
+As a note, I believe that in practice, building images for the N most recent releases may not be a good strategy. It does not make sense to build a new image for a release which was superseded by a more recent patch release for example. Building image for the N most recent minor releases for each supported major version seems a better strategy instead. But it would make this example more complex, and it's just a matter of interacting with GitHub API + adding some logic before generating JSON output, it has nothing to do with dynamic matrices.
 
 
 ## Example
