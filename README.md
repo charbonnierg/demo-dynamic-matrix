@@ -10,7 +10,7 @@ I was wondering how projects such as oauth2-proxy could automate periodic builds
 
 Also, in order to avoid requiring an update to the workflow file each time a new release is out, I wanted a solution which did not require configuring the git references explicitely, but rather static configuration, for example, the last 4 releases.
 
-As a note, I believe that in practice, building images for the N most recent releases may not be a good strategy. It does not make sense to build a new image for a release which was superseded by a more recent patch release for example. Building image for the N most recent minor releases for each supported major version seems a better strategy instead. But it would make this example more complex, and it's just a matter of interacting with GitHub API + adding some logic before generating JSON output, it has nothing to do with dynamic matrices.
+*Note*: building images for the N most recent releases may not be a good strategy IMO. It does not make sense to build a new image for a release which was superseded by a more recent patch release for example. Building image for the N most recent minor releases for each supported major version seems a better strategy instead. But it would make this example more complex, and it's just a matter of interacting with GitHub API + adding some logic before generating JSON output, it has nothing to do with dynamic matrices.
 
 
 ## Example
