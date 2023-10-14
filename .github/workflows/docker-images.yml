@@ -11,20 +11,27 @@ jobs:
     steps:
       - name: identify 4 latest releases
         run: |
-          gh api "/repos/${{ github.repository }}/releases?per_page=4" | jq -c "{release_tag: map( .tag_name )}" > matrix.json
-          cat ./matrix.json
-          echo "matrix=$(cat ./matrix.json)" >> $GITHUB_OUTPUT
+          tags=$(gh api "/repos/${{ github.repository }}/releases?per_page=4" | jq -j -c "map( .tag_name )")
+          echo "tags=$tags" >> $GITHUB_OUTPUT
         env:
           GH_TOKEN: ${{ github.token }}
 
-  buildandpush:
+  debug:
     needs: prepare
+    runs-on: ubuntu-latest
+    steps:
+      - name: debug generated matrix
+        run: echo ${{fromJson(needs.prepare.outputs.tags)}}
+
+  buildandpush:
+    needs: [prepare, debug]
     permissions:
       packages: write
     runs-on: ubuntu-latest
     strategy:
       max-parallel: 4
-      matrix: ${{fromJson(needs.prepare.outputs.matrix)}}
+      matrix:
+        release_tag: ${{fromJson(needs.prepare.outputs.tags)}}
 
     steps:
       - name: checkout branch for schedule event
