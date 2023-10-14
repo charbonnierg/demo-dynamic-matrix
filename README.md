@@ -56,7 +56,7 @@ jobs:
 
 ```yaml
 <jobid2>:
-  needs: [prepare]
+  needs: [<jobid1>]
   strategy:
     max-parallel: 4
     matrix:
