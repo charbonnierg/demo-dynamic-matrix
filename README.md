@@ -4,7 +4,7 @@ This repository shows how it's possible to use a GitHub Action Worflow with a dy
 
 ## Motivation
 
-Docker images are only built once (at release time) for many open source projects. The problem with this approach is that if a CVE is detected in the base image, then the CVE is present in the docker image of the project until next release. That's [the case of for oauth2-proxy project](https://github.com/oauth2-proxy/oauth2-proxy/issues/2243) for example.
+Docker images are only built once (at release time) for many open source projects. The problem with this approach is that if a CVE is detected in the base image, then the CVE is present in the docker image of the project until next release. That seems to be the case for [oauth2-proxy](https://oauth2-proxy.github.io/oauth2-proxy/) according to [this issue](https://github.com/oauth2-proxy/oauth2-proxy/issues/2243) for example.
 
 I was wondering how projects such as oauth2-proxy could automate periodic builds for historical releases, and quickly identified workflows matrix as a solution for the problem, because it allows build to happen concurrently (as compared to a shell script performing a for loop within a step).
 
