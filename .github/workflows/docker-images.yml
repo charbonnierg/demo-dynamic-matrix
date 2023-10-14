@@ -7,10 +7,11 @@ on:
 
 jobs:
   prepare:
-    runs-on: latest
+    runs-on: ubuntu-latest
     steps:
-      - run: |
-          gh api /repos/oauth2-proxy/oauth2-proxy/releases?per_page=4 --jq "{release_tag: map( .tag_name )}" > matrix.json
+      - name: identify 4 latest releases
+        run: |
+          gh api "/repos/${{ github.repository_owner }}/${{ github.repository }}/releases?per_page=4" --jq "{release_tag: map( .tag_name )}" > matrix.json
           cat ./matrix.json
           matrixJSON="$(cat ./matrix.json)"
           echo "::set-output name=matrix::$matrixJSON"
@@ -19,7 +20,7 @@ jobs:
     needs: prepare
     permissions:
       packages: write
-    runs-on: latest
+    runs-on: ubuntu-latest
     strategy:
       max-parallel: 4
       matrix: ${{fromJson(needs.prepare.outputs.matrix)}}
