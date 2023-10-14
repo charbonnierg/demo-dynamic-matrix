@@ -9,12 +9,15 @@ jobs:
   prepare:
     runs-on: ubuntu-latest
     steps:
-      - run: |
+      - id: releases
+        run: |
           set -eux
           JSON=$(gh api "/repos/charbonnierg/demo-dynamic-matrix/releases?per_page=4" | jq -c "map( .tag_name )" | jq -R)
           echo "TAGS=$JSON" >> "$GITHUB_OUTPUT"
         env:
           GH_TOKEN: ${{ github.token }}
+    outputs:
+      TAGS: ${{ steps.releases.outputs.TAGS }}
 
   debug:
     needs: prepare
