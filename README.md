@@ -15,7 +15,7 @@ In practice, building images for the N most recent releases may not be the best 
 
 ## Example
 
-A single action workflow is available: [./github/workflows/docker-images.yml](https://github.com/charbonnierg/demo-dynamic-matrix/blob/main/.github/workflows/docker-images.yml).
+A single action workflow is available: [./github/workflows/docker-images.yml](https://github.com/charbonnierg/demo-dynamic-matrix/blob/main/.github/workflows/docker-images.yml). Workflow outcome is avaibale in [Actions section](https://github.com/charbonnierg/demo-dynamic-matrix/actions/runs/6517850378).
 
 This workflow is composed of two sequential jobs:
 
