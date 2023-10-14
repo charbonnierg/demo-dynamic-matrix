@@ -4,7 +4,7 @@ This repository shows how to use a GitHub Action Worflow with a dynamic matrix s
 
 ## Motivation
 
-Docker images are only built once (at release time) for many open source projects. The problem with this approach is that if when CVE is detected in the base image, CVE is present in the docker image of the project until next release, and won't be fixed for historical releases. That seems to be the case for [oauth2-proxy](https://oauth2-proxy.github.io/oauth2-proxy/) according to [this issue](https://github.com/oauth2-proxy/oauth2-proxy/issues/2243) for example.
+Docker images are only built once (at release time) for many open source projects. The problem with this approach is that when CVE is detected in the base image, this CVE stays in the docker image of the project and won't be fixed except for newer releases. That seems to be the case for [oauth2-proxy](https://oauth2-proxy.github.io/oauth2-proxy/) according to [this issue](https://github.com/oauth2-proxy/oauth2-proxy/issues/2243) for example.
 
 I was wondering how projects such as oauth2-proxy could automate periodic builds for historical releases, and I  identified workflows matrix as a potential solution to the problem, because matrices let build run concurrently (as opposed to a shell script performing a for loop within a single step).
 
