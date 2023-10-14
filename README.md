@@ -75,20 +75,6 @@ steps:
 
 ## Good to know
 
-- It's easy to fetch tags for latest releases using GitHub CLI and `jq` (both are installed by default in github runner environments):
-
-```bash
-gh api "/repos/${{ github.repository }}/releases?per_page=4" | jq -j -c "map( .tag_name )"
-```
-
-  > - `${{ github.repository }}` is a variable available in workflows environments. It contains both the repository owner and the repository name separated with a `/`. For this repo, it would be `charbonnierg/demo-dynamic-matrix`.
-  > - `per_page` query string parameter ( `?per_page=4`) is used to limit the number of releases returned. 
-  > - jq option `-c` is used to output a single line (by default `jq` outputs pretty formatted JSON)
-  > - jq option `-j` is used to not add a line break at the end of JSON string (by default `jq` adds a linebreak)
-  > - expression `map( .tag_name )` is used to extract the property `"tag_name"` for each element present in the JSON array returned by GitHub API. By default a lot of information is returned, including URLs to release asserts, so it should be possible to download assets, and build docker images using the very same assets that were compiled at release time. I don't know if that would be a good idea though... In this example, there is no "compile" step, so there is no discussion 😅
-
-  This will output `["v5","v4","v3","v2"]` assuming that the four latest release tags are `v5`, `v4`, `v3` and `v2` (values are sorted from most recent to oldest).
-
 - `gh` CLI is installed in default runner environments, but requires the `GH_TOKEN` environment variable to be set:
 
 ```yaml
@@ -98,3 +84,23 @@ gh api "/repos/${{ github.repository }}/releases?per_page=4" | jq -j -c "map( .t
         env:
           GH_TOKEN: ${{ github.token }}
 ```
+
+- It's easy to fetch tags for latest releases using GitHub CLI and `jq` (both are installed by default in github runner environments):
+
+```bash
+gh api "/repos/${{ github.repository }}/releases?per_page=4" | jq -j -c "map( .tag_name )"
+```
+
+  This will output `["v5","v4","v3","v2"]` assuming that the four latest release tags are `v5`, `v4`, `v3` and `v2` (values are sorted from most recent to oldest).
+
+  Some explanations:
+
+  - `${{ github.repository }}` is a variable available in workflows environments. It contains both the repository owner and the repository name separated with a `/`. For this repo, it would be `charbonnierg/demo-dynamic-matrix`.
+
+  - `per_page` query string parameter ( `?per_page=4`) is used to limit the number of releases returned. 
+
+  - jq option `-c` is used to output a single line (by default `jq` outputs pretty formatted JSON)
+
+  - jq option `-j` is used to not add a line break at the end of JSON string (by default `jq` adds a linebreak)
+
+  - expression `map( .tag_name )` is used to extract the property `"tag_name"` for each element present in the JSON array returned by GitHub API. By default a lot of information is returned, including URLs to release asserts, so it should be possible to download assets, and build docker images using the very same assets that were compiled at release time. I don't know if that would be a good idea though... In this example, there is no "compile" step, so there is no discussion 😅
