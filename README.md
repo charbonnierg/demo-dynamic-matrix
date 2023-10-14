@@ -28,21 +28,21 @@ steps:
 
 ```yaml
 jobs:
-  prepare:
+  <jobid1>:
     runs-on: ubuntu-latest
     outputs:
-      <OUTPUT_NAME>: ${{ steps.<stepid>.outputs.<step_output_name> }}
+      <output_name>: ${{ steps.<stepid>.outputs.<step_output_name> }}
 ```
 
 - A matrix parameter can be loaded from any JSON array output from a needed job (e.g., a previous job):
 
 ```yaml
-build:
+<jobid2>:
   needs: [prepare]
   strategy:
     max-parallel: 4
     matrix:
-      <param_name>: ${{ fromJson(needs.<jobid>.outputs.<output_name>) }}
+      <param_name>: ${{ fromJson(needs.<jobid1>.outputs.<output_name>) }}
 ```
 
 - Matrix parameters can be consumed just like usual:
@@ -52,5 +52,5 @@ steps:
   - name: checkout tag for release
     uses: actions/checkout@v4
     with:
-      ref: ${{ matrix.release_tag }}
+      ref: ${{ matrix.<param_name> }}
 ```
