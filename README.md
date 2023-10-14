@@ -39,7 +39,8 @@ The workflow is composed of two sequential jobs (i.e., the second is dependent o
 steps:
   - id: <stepid>
     run: |
-      echo "<name>=<value>" >> "$GITHUB_OUTPUT"
+      VALUE="some value"
+      echo "<step_output_name>=$VALUE" >> "$GITHUB_OUTPUT"
 ```
 
 - A job with steps emitting outputs to be consumed by other jobs must declare job outputs explicitely:
@@ -79,8 +80,7 @@ steps:
 
 ```yaml
     steps:
-      - run: |
-          gh api <path> [options]
+      - run: gh api <path> [options]
         env:
           GH_TOKEN: ${{ github.token }}
 ```
