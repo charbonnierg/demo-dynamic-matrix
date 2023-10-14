@@ -22,7 +22,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: debug generated matrix
-        run: echo ${{fromJson(needs.prepare.outputs.TAGS)}}
+        run: echo ${{needs.prepare.outputs.TAGS}}
 
   buildandpush:
     needs: [prepare, debug]
