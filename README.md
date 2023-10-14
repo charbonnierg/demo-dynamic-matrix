@@ -10,6 +10,8 @@ I was wondering how projects such as oauth2-proxy could automate periodic builds
 
 Also, in order to avoid updating the workflow file each time a new release is out, I wanted a solution which did not require configuring the git references explicitely, but rather static configuration, for example, the last 4 releases.
 
+> In practice, build images for the 4 latest releases may not be the best strategy. Building image for the N most recent minor releases for each supported major version seems a better strategy instead. But it would make this example more complex, and it's just a matter of interacting with GitHub API + adding some logic before generating JSON output, it has nothing to do with dynamic matrices.
+
 
 ## Example
 
@@ -17,9 +19,12 @@ A single action workflow is available: [./github/workflows/docker-images.yml](ht
 
 This workflow is composed of two sequential jobs:
 
-- First job fetches the 4 latest releases of this project using GitHub API and then creates an array as JSON output holding the tag names for each release.
+- First job has a single step and a single output coming from the step. This step:
+  - fetches the 4 latest releases of this project using GitHub API
+  - creates an array as a JSON string holding the tag names for each release with JQ
+  - write array as a JSON string into step output.
 
-- Second job relies on JSON output from previous job to define a matrix strategy, and runs build & publish steps for each tag.
+- Second job relies on JSON output from previous job to define a matrix strategy according to release tags, and runs several steps for each release tag in order to build/push docker images.
 
 ## Key Take Aways
 
