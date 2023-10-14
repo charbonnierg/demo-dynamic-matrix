@@ -13,10 +13,7 @@ jobs:
         id: prepare
         run: |
           JSON=$(gh api "/repos/${{ github.repository }}/releases?per_page=4" | jq -c "map( .tag_name )")
-          delimiter="$(openssl rand -hex 8)"
-          echo "TAGS<<${delimiter}" >> "${GITHUB_OUTPUT}"
-          echo "$JSON" >> "${GITHUB_OUTPUT}"
-          echo "${delimiter}" >> "${GITHUB_OUTPUT}"
+          echo "TAGS=${JSON}" >> "${GITHUB_OUTPUT}"
         env:
           GH_TOKEN: ${{ github.token }}
 
