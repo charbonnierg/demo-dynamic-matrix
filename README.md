@@ -21,10 +21,14 @@ This workflow is composed of two sequential jobs:
 
 - First job has a single step and a single output coming from the step. This step:
   - fetches the 4 latest releases of this project using GitHub API
-  - creates an array as a JSON string holding the tag names for each release with JQ
-  - write array as a JSON string into step output.
+  - creates an array as a JSON string holding the tag reference for each release with `jq`
+  - write tags array as a JSON string into step output.
 
-- Second job relies on JSON output from previous job to define a matrix strategy according to release tags, and runs several steps for each release tag in order to build/push docker images.
+- Second job relies on JSON output from previous job to define a matrix strategy, and runs several steps for each tag reference (e.g., each release):
+  - checkout repo for this tag
+  - login to ocker registry
+  - prepare docker buildx environment
+  - build and push docker images for this tag
 
 ## Key Take Aways
 
