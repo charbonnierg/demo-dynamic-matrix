@@ -9,11 +9,10 @@ jobs:
   prepare:
     runs-on: ubuntu-latest
     steps:
-      - name: identify 4 latest releases
-        id: prepare
-        run: |
-          JSON=$(gh api "/repos/${{ github.repository }}/releases?per_page=4" | jq -c "map( .tag_name )")
-          echo "TAGS=${JSON}" >> "${GITHUB_OUTPUT}"
+      - run: |
+          set -eux
+          JSON=$(gh api "/repos/charbonnierg/demo-dynamic-matrix/releases?per_page=4" | jq -c "map( .tag_name )" | jq -R)
+          echo "TAGS=$JSON" >> "$GITHUB_OUTPUT"
         env:
           GH_TOKEN: ${{ github.token }}
 
@@ -22,7 +21,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: debug generated matrix
-        run: echo ${{needs.prepare.outputs.TAGS}}
+        run: echo ${{fromJson(needs.prepare.outputs.TAGS)}}
 
   buildandpush:
     needs: [prepare, debug]
