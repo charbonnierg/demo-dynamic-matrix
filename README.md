@@ -95,12 +95,12 @@ gh api "/repos/${{ github.repository }}/releases?per_page=4" | jq -j -c "map( .t
 
   Some explanations:
 
-  - `${{ github.repository }}` is a variable available in workflows environments. It contains both the repository owner and the repository name separated with a `/`. For this repo, it would be `charbonnierg/demo-dynamic-matrix`.
+  - github *variable* `${{ github.repository }}` is always available in workflows environments. It contains both the repository owner and the repository name separated with a `/`. For this repo, it is equal to `charbonnierg/demo-dynamic-matrix`.
 
-  - `per_page` query string parameter ( `?per_page=4`) is used to limit the number of releases returned. 
+  - query string parameter `per_page` is used to limit the number of releases returned (`?per_page=4`).  
 
-  - jq option `-c` is used to output a single line (by default `jq` outputs pretty formatted JSON)
+  - jq *option* `-c` is used to output a single line (by default `jq` outputs pretty formatted JSON)
 
-  - jq option `-j` is used to not add a line break at the end of JSON string (by default `jq` adds a linebreak)
+  - jq *option* `-j` is used to not add a line break at the end of JSON string (by default `jq` adds a linebreak)
 
-  - expression `map( .tag_name )` is used to extract the property `"tag_name"` for each element present in the JSON array returned by GitHub API. By default a lot of information is returned, including URLs to release asserts, so it should be possible to download assets, and build docker images using the very same assets that were compiled at release time. I don't know if that would be a good idea though... In this example, there is no "compile" step, so there is no discussion 😅
+  - jq *expression* `map( .tag_name )` is used to extract the property `"tag_name"` for each element present in the JSON array returned by GitHub API. By default a lot of information is returned, including URLs to release asserts, so it should be possible to download assets, and build docker images using the very same assets that were compiled at release time. I don't know if that would be a good idea though... In this example, there is no "compile" step, so there is no discussion 😅
