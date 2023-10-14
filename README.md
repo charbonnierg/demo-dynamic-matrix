@@ -57,18 +57,16 @@ steps:
 
 ## Good to know
 
-- It's easy to fetch tags for latest releases using GitHub CLI and `jq`:
+- It's easy to fetch tags for latest releases using GitHub CLI and `jq` (both are installed by default in github runner environments):
 
 ```bash
 gh api "/repos/${{ github.repository }}/releases?per_page=4" | jq -j -c "map( .tag_name )"
 ```
 
-  > `-c` option is used to output a single line and `-j` option is used to not add a line break at the end of JSON string.
+  > - `-c` option is used to output a single line 
+  > - `-j` option is used to not add a line break at the end of JSON string.
 
   This will output `["v5","v4","v3","v2"]` assuming that the four latest release tags are `v5`, `v4`, `v3` and `v2` (values are sorted from most recent to oldest).
-
-> Note: gh CLI has an option named `--jq` which accepts `jq` expressions, but I don't know how to combine it with `-c` and `-j` `jq` options.
-
 
 - `gh` CLI is installed in default runner environments, but requires the `GH_TOKEN` environment variable to be set:
 
