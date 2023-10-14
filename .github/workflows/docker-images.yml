@@ -1,0 +1,50 @@
+name: Docker Images
+
+on:
+  schedule:
+    - cron: "30 1 1,15 * *" # the 1st and the 15th of every month at 1:30 AM
+
+jobs:
+  prepare:
+    runs-on: latest
+    steps:
+      - run: |
+          gh api /repos/oauth2-proxy/oauth2-proxy/releases?per_page=4 --jq "{release_tag: map( .tag_name )}" > matrix.json
+          cat ./matrix.json
+          matrixJSON="$(cat ./matrix.json)"
+          echo "::set-output name=matrix::$matrixJSON"
+
+  buildandpush:
+    needs: prepare
+    runs-on: latest
+    strategy:
+      max-parallel: 4
+      matrix: ${{fromJson(needs.prepare.outputs.matrix)}}
+
+    steps:
+      - name: checkout branch for schedule event
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ matrix.release_tag }}
+
+      - name: Check out code
+        uses: actions/checkout@v3
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+
+      - name: Set up Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Docker Build
+        run: |
+          make docker-push-all
+

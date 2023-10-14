@@ -15,17 +15,25 @@ DOCKER_BUILDX_PUSH_X_PLATFORM := $(DOCKER_BUILDX_PUSH) --platform ${DOCKER_BUILD
 
 .PHONY: docker
 docker:
-	$(DOCKER_BUILDX_X_PLATFORM) -t $(REGISTRY)/oauth2-proxy:latest -t $(REGISTRY)/oauth2-proxy:${VERSION} .
+	$(DOCKER_BUILDX_X_PLATFORM) -t $(REGISTRY)/$(REPOSITORY):latest -t $(REGISTRY)/$(REPOSITORY):${VERSION} .
 
 .PHONY: docker-all
 docker-all: docker
-	$(DOCKER_BUILDX) --platform linux/amd64   -t $(REGISTRY)/oauth2-proxy:latest-amd64   -t $(REGISTRY)/oauth2-proxy:$(VERSION)-amd64 .
-	$(DOCKER_BUILDX) --platform linux/arm64   -t $(REGISTRY)/oauth2-proxy:latest-arm64   -t $(REGISTRY)/oauth2-proxy:$(VERSION)-arm64 .
-	$(DOCKER_BUILDX) --platform linux/ppc64le -t $(REGISTRY)/oauth2-proxy:latest-ppc64le -t $(REGISTRY)/oauth2-proxy:$(VERSION)-ppc64le .
-	$(DOCKER_BUILDX) --platform linux/arm/v6  -t $(REGISTRY)/oauth2-proxy:latest-armv6   -t $(REGISTRY)/oauth2-proxy:$(VERSION)-armv6 .
-	$(DOCKER_BUILDX) --platform linux/arm/v7  -t $(REGISTRY)/oauth2-proxy:latest-armv7   -t $(REGISTRY)/oauth2-proxy:$(VERSION)-armv7 .
+	$(DOCKER_BUILDX) --platform linux/amd64   -t $(REGISTRY)/$(REPOSITORY):latest-amd64   -t $(REGISTRY)/$(REPOSITORY):$(VERSION)-amd64 .
+	$(DOCKER_BUILDX) --platform linux/arm64   -t $(REGISTRY)/$(REPOSITORY):latest-arm64   -t $(REGISTRY)/$(REPOSITORY):$(VERSION)-arm64 .
+	$(DOCKER_BUILDX) --platform linux/ppc64le -t $(REGISTRY)/$(REPOSITORY):latest-ppc64le -t $(REGISTRY)/$(REPOSITORY):$(VERSION)-ppc64le .
+	$(DOCKER_BUILDX) --platform linux/arm/v6  -t $(REGISTRY)/$(REPOSITORY):latest-armv6   -t $(REGISTRY)/$(REPOSITORY):$(VERSION)-armv6 .
+	$(DOCKER_BUILDX) --platform linux/arm/v7  -t $(REGISTRY)/$(REPOSITORY):latest-armv7   -t $(REGISTRY)/$(REPOSITORY):$(VERSION)-armv7 .
 
 .PHONY: docker-push
 docker-push:
 	$(DOCKER_BUILDX_PUSH_X_PLATFORM) -t $(REGISTRY)/$(REPOSITORY):latest -t $(REGISTRY)/$(REPOSITORY):$(VERSION) .
+
+.PHONY: docker-push-all
+docker-push-all: docker-push
+	$(DOCKER_BUILDX_PUSH) --platform linux/amd64   -t $(REGISTRY)/$(REPOSITORY):latest-amd64   -t $(REGISTRY)/$(REPOSITORY):${VERSION}-amd64 .
+	$(DOCKER_BUILDX_PUSH) --platform linux/arm64   -t $(REGISTRY)/$(REPOSITORY):latest-arm64   -t $(REGISTRY)/$(REPOSITORY):${VERSION}-arm64 .
+	$(DOCKER_BUILDX_PUSH) --platform linux/ppc64le -t $(REGISTRY)/$(REPOSITORY):latest-ppc64le -t $(REGISTRY)/$(REPOSITORY):${VERSION}-ppc64le .
+	$(DOCKER_BUILDX_PUSH) --platform linux/arm/v6  -t $(REGISTRY)/$(REPOSITORY):latest-armv6   -t $(REGISTRY)/$(REPOSITORY):${VERSION}-armv6 .
+	$(DOCKER_BUILDX_PUSH) --platform linux/arm/v7  -t $(REGISTRY)/$(REPOSITORY):latest-armv7   -t $(REGISTRY)/$(REPOSITORY):${VERSION}-armv7 .
 
