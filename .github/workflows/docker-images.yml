@@ -8,17 +8,17 @@ on:
 jobs:
   prepare:
     runs-on: ubuntu-latest
+    # Reference: https://docs.github.com/en/actions/using-jobs/defining-outputs-for-jobs
+    outputs:
+      TAGS: ${{ steps.releases.outputs.TAGS }}
     steps:
       - id: releases
         run: |
           set -eux
-          JSON=$(gh api "/repos/charbonnierg/demo-dynamic-matrix/releases?per_page=4" | jq -c "map( .tag_name )")
+          JSON=$(gh api "/repos/${{ github.repository }}/releases?per_page=4" | jq -j -c "map( .tag_name )")
           echo "TAGS=$JSON" >> "$GITHUB_OUTPUT"
         env:
           GH_TOKEN: ${{ github.token }}
-    # Reference: https://docs.github.com/en/actions/using-jobs/defining-outputs-for-jobs
-    outputs:
-      TAGS: ${{ steps.releases.outputs.TAGS }}
 
   build:
     needs: [prepare]
@@ -32,7 +32,7 @@ jobs:
         release_tag: ${{ fromJson(needs.prepare.outputs.TAGS) }}
 
     steps:
-      - name: checkout branch for schedule event
+      - name: checkout tag for release
         uses: actions/checkout@v4
         with:
           ref: ${{ matrix.release_tag }}
