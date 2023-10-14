@@ -14,7 +14,6 @@ jobs:
     steps:
       - id: releases
         run: |
-          set -eux
           JSON=$(gh api "/repos/${{ github.repository }}/releases?per_page=4" | jq -j -c "map( .tag_name )")
           echo "TAGS=$JSON" >> "$GITHUB_OUTPUT"
         env:
