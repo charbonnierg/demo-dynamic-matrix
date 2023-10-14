@@ -15,7 +15,7 @@ In practice, building images for the N most recent releases may not be the best 
 
 ## Example
 
-A single action workflow is available: [./github/workflows/docker-images.yml](https://github.com/charbonnierg/demo-dynamic-matrix/blob/main/.github/workflows/docker-images.yml). Manual dispatch outcome is avaibale in [Actions section](https://github.com/charbonnierg/demo-dynamic-matrix/actions/runs/6517850378). Aside from manual dispatch, workflow is scheduled to run twice a month in this example using the following cron expression: `"30 1 1,15 * *"` (meaning the 1st and the 15th of every month at 1:30am).
+A single action workflow is available: [./github/workflows/docker-images.yml](https://github.com/charbonnierg/demo-dynamic-matrix/blob/main/.github/workflows/docker-images.yml). Manual dispatch outcome is avaibale in [Actions section](https://github.com/charbonnierg/demo-dynamic-matrix/actions/runs/6517850378). Aside from manual dispatch, workflow is scheduled to run twice a month using the cron expression: `"30 1 1,15 * *"` (meaning the 1st and the 15th of every month at 1:30am).
 
 This workflow is composed of two sequential jobs:
 
