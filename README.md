@@ -88,7 +88,10 @@ steps:
 - It's easy to fetch tags for latest releases using GitHub CLI and `jq` (which is also installed by default):
 
 ```bash
-gh api "/repos/${{ github.repository }}/releases?per_page=4" | jq -j -c "map( .tag_name )"
+    steps:
+      - run: gh api "/repos/${{ github.repository }}/releases?per_page=4" | jq -j -c "map( .tag_name )"
+        env:
+          GH_TOKEN: ${{ github.token }}
 ```
 
   This will output `["v5","v4","v3","v2"]` assuming that the four latest release tags are `v5`, `v4`, `v3` and `v2` (values are sorted from most recent to oldest).
