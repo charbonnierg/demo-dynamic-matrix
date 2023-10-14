@@ -1,6 +1,6 @@
 # Demo repository: dynamic matrix strategy
 
-This repository shows how it's possible to use a GitHub Action Worflow with a dynamic matrix strategy.
+This repository shows how to use a GitHub Action Worflow with a dynamic matrix strategy.
 
 ## Motivation
 
